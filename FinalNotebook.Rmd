@@ -19,6 +19,39 @@ head(food)
 ```{r}
 summary(food)
 ```
+```{r}
+food_subset <- food[, c("Food.product", "Land.use.change", "Total_emissions")]
+```
+
+```{r}
+library(dplyr)
+food_production_summary <- food_subset %>% 
+  group_by(Food.product) %>% 
+  summarize(Total_emissions = sum(Total_emissions, na.rm = TRUE),
+            Mean_Land_Use = mean(Land.use.change, na.rm = TRUE))
+```
+
+
+```{r}
+library(dplyr)
+
+food %>%
+  summarize(mean_land_use = mean(Land.use.change, na.rm = TRUE))
+```
+
+
+```{r}
+library(ggplot2)
+
+ggplot(food_production_summary, aes(x = Food.product, y = Total_emissions)) +
+  geom_bar(stat = "identity", fill = "dodgerblue3") +
+  xlab("Food Product") +
+  ylab("Total Emissions") +
+  ggtitle("Total Emissions by Food Product") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
 
 When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
